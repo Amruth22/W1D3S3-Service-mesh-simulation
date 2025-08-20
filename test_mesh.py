@@ -13,12 +13,12 @@ REGISTRY_URL = "http://localhost:8081"
 
 def test_service_mesh():
     """Test the service mesh simulation"""
-    print("🧪 Testing K8s Service Mesh Simulation")
+    print("[TEST] Testing K8s Service Mesh Simulation")
     print("=" * 60)
     
     try:
         # Test 1: Gateway Health
-        print("\n1. 🌐 Testing Gateway")
+        print("\n1. [TEST] Testing Gateway")
         response = requests.get(f"{GATEWAY_URL}/")
         print(f"Status: {response.status_code}")
         if response.status_code == 200:
@@ -27,7 +27,7 @@ def test_service_mesh():
             print(f"Services: {', '.join(data['services'].keys())}")
         
         # Test 2: Service Registry
-        print("\n2. 📋 Testing Service Registry")
+        print("\n2. [TEST] Testing Service Registry")
         response = requests.get(f"{REGISTRY_URL}/services")
         print(f"Status: {response.status_code}")
         if response.status_code == 200:
@@ -36,7 +36,7 @@ def test_service_mesh():
             print(f"Healthy Services: {data['healthy_services']}")
         
         # Test 3: Catalog Service
-        print("\n3. 📦 Testing Catalog Service")
+        print("\n3. [TEST] Testing Catalog Service")
         response = requests.get(f"{GATEWAY_URL}/catalog/products")
         print(f"Status: {response.status_code}")
         if response.status_code == 200:
@@ -60,7 +60,7 @@ def test_service_mesh():
             print(f"Added: {data['item']['name']} x{data['item']['quantity']}")
         
         # Test 5: Order Service
-        print("\n5. 📋 Testing Order Service")
+        print("\n5. [TEST] Testing Order Service")
         response = requests.post(f"{GATEWAY_URL}/order/create?user_id={user_id}")
         print(f"Create Order Status: {response.status_code}")
         if response.status_code == 200:
@@ -69,7 +69,7 @@ def test_service_mesh():
             print(f"Total: ${data['total']}")
         
         # Test 6: Service Mesh Status
-        print("\n6. 🕸️  Testing Service Mesh Status")
+        print("\n6. [TEST] Testing Service Mesh Status")
         response = requests.get(f"{GATEWAY_URL}/mesh/status")
         print(f"Status: {response.status_code}")
         if response.status_code == 200:
@@ -79,7 +79,7 @@ def test_service_mesh():
                 print(f"  {service}: {status['state']} (failures: {status['failure_count']})")
         
         # Test 7: Health Checks
-        print("\n7. 🏥 Testing Health Checks")
+        print("\n7. [TEST] Testing Health Checks")
         services = ["catalog", "cart", "order"]
         for service in services:
             response = requests.get(f"{GATEWAY_URL}/{service}/health")
@@ -89,7 +89,7 @@ def test_service_mesh():
                 print(f"  Status: {data['status']}")
         
         # Test 8: Service Discovery
-        print("\n8. 🔍 Testing Service Discovery")
+        print("\n8. [TEST] Testing Service Discovery")
         response = requests.get(f"{REGISTRY_URL}/discovery")
         print(f"Status: {response.status_code}")
         if response.status_code == 200:
@@ -99,7 +99,7 @@ def test_service_mesh():
                 print(f"  {endpoint}")
         
         # Test 9: Circuit Breaker (Simulate Failures)
-        print("\n9. ⚡ Testing Circuit Breaker")
+        print("\n9. [TEST] Testing Circuit Breaker")
         print("Triggering multiple failures to test circuit breaker...")
         
         for i in range(5):
@@ -119,7 +119,7 @@ def test_service_mesh():
             print(f"Catalog Circuit Breaker: {catalog_status.get('state', 'unknown')}")
         
         # Test 10: Load Balancing (Check Headers)
-        print("\n10. ⚖️  Testing Load Balancing")
+        print("\n10. [TEST] Testing Load Balancing")
         replicas = set()
         for i in range(5):
             response = requests.get(f"{GATEWAY_URL}/catalog/products")
@@ -131,8 +131,8 @@ def test_service_mesh():
         print(f"Used {len(replicas)} different replicas")
         
         print("\n" + "=" * 60)
-        print("✅ Service Mesh Testing Complete!")
-        print("🎓 K8s concepts demonstrated:")
+        print("[TEST] Service Mesh Testing Complete!")
+        print("[TEST] K8s concepts demonstrated:")
         print("  • Service Discovery (Registry)")
         print("  • Path-based Routing (Ingress)")
         print("  • Circuit Breaker (Fault Tolerance)")
@@ -141,11 +141,11 @@ def test_service_mesh():
         print("  • Inter-service Communication")
         
     except requests.exceptions.ConnectionError:
-        print("❌ Error: Could not connect to services")
+        print("[ERROR] Could not connect to services")
         print("Make sure both services are running:")
         print("  python start_services.py")
     except Exception as e:
-        print(f"❌ Error during testing: {e}")
+        print(f"[ERROR] Error during testing: {e}")
 
 def main():
     """Main function"""
