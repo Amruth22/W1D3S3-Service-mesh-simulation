@@ -51,9 +51,9 @@ This starts:
 - **Gateway** (Port 8080) - Service mesh with routing
 - **Registry** (Port 8081) - Service discovery
 
-### 3. **Test the Simulation**
+### 3. **Run Unit Tests**
 ```bash
-python test_mesh.py
+python unit_test.py
 ```
 
 ### 4. **Access Services**
@@ -67,7 +67,7 @@ python test_mesh.py
 ├── gateway.py              # Main gateway (port 8080)
 ├── registry.py            # Service registry (port 8081)
 ├── start_services.py      # Start both services
-├── test_mesh.py          # Test all features
+├── unit_test.py          # Core 5 unit tests
 ├── config/
 │   └── deployment.yaml    # Service configuration
 ├── services/
@@ -154,7 +154,27 @@ mesh:
     backoff_seconds: 1
 ```
 
-## 🧪 **Testing Scenarios**
+## 🧪 **Unit Testing**
+
+### **Core 5 Tests**
+The `unit_test.py` includes focused tests for:
+
+1. **Gateway Test** - Path-based routing (K8s Ingress)
+2. **Registry Test** - Service discovery functionality  
+3. **Microservice Test** - Inter-service communication
+4. **Circuit Breaker Test** - Fault tolerance mechanisms
+5. **Mesh Status Test** - Service mesh observability
+
+### **Run Tests**
+```bash
+# Start services first
+python start_services.py
+
+# Run unit tests (in another terminal)
+python unit_test.py
+```
+
+## 🧪 **Manual Testing Scenarios**
 
 ### **1. Normal Operations**
 ```bash
