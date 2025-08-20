@@ -33,10 +33,10 @@ class ServiceRegistry:
                     description=service_config["description"]
                 )
                 self.services[service_key] = service_info
-                print(f"📋 Registered service: {service_info.name} at {service_info.path}")
+                print(f"[REGISTRY] Registered service: {service_info.name} at {service_info.path}")
         
         except Exception as e:
-            print(f"❌ Failed to load config: {e}")
+            print(f"[REGISTRY] Failed to load config: {e}")
     
     async def check_service_health(self, service_key: str) -> bool:
         """Check health of a specific service"""
@@ -62,13 +62,13 @@ class ServiceRegistry:
     
     async def health_check_all_services(self):
         """Check health of all registered services"""
-        print("🏥 Running health checks on all services...")
+        print("[REGISTRY] Running health checks on all services...")
         
         for service_key in self.services.keys():
             is_healthy = await self.check_service_health(service_key)
             service = self.services[service_key]
-            status_emoji = "✅" if is_healthy else "❌"
-            print(f"{status_emoji} {service.name}: {service.status}")
+            status_text = "[HEALTHY]" if is_healthy else "[UNHEALTHY]"
+            print(f"{status_text} {service.name}: {service.status}")
     
     def get_service_endpoints(self) -> List[str]:
         """Get all available service endpoints"""
@@ -96,7 +96,7 @@ registry = ServiceRegistry()
 @app.on_event("startup")
 async def startup_event():
     """Start background health checking"""
-    print("🚀 Service Registry starting on port 8081...")
+    print("[REGISTRY] Service Registry starting on port 8081...")
     
     # Start background health checking
     asyncio.create_task(periodic_health_check())
