@@ -30,8 +30,8 @@ class ServiceMeshGateway:
         self.circuit_breaker = CircuitBreakerManager()
         self.retry_handler = RetryHandler(max_attempts=3, base_delay=1.0)
         
-        print("🌐 Service Mesh Gateway initialized")
-        print("📦 Services loaded: catalog, cart, order")
+        print("[GATEWAY] Service Mesh Gateway initialized")
+        print("[GATEWAY] Services loaded: catalog, cart, order")
     
     async def call_with_mesh(self, service_name: str, service_func, *args, **kwargs):
         """
