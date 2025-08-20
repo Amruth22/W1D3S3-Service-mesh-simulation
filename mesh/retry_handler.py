@@ -20,17 +20,17 @@ class RetryHandler:
         
         for attempt in range(1, self.max_attempts + 1):
             try:
-                print(f"🔄 Attempt {attempt}/{self.max_attempts} for {service_name}")
+                print(f"[RETRY] Attempt {attempt}/{self.max_attempts} for {service_name}")
                 result = await func(*args, **kwargs)
                 
                 if attempt > 1:
-                    print(f"✅ {service_name} succeeded on attempt {attempt}")
+                    print(f"[RETRY] {service_name} succeeded on attempt {attempt}")
                 
                 return result
                 
             except Exception as e:
                 last_exception = e
-                print(f"❌ {service_name} failed on attempt {attempt}: {str(e)}")
+                print(f"[RETRY] {service_name} failed on attempt {attempt}: {str(e)}")
                 
                 # Don't wait after the last attempt
                 if attempt < self.max_attempts:
@@ -39,11 +39,11 @@ class RetryHandler:
                     jitter = random.uniform(0, 0.1)  # Add small random delay
                     total_delay = delay + jitter
                     
-                    print(f"⏳ Waiting {total_delay:.2f}s before retry...")
+                    print(f"[RETRY] Waiting {total_delay:.2f}s before retry...")
                     await asyncio.sleep(total_delay)
         
         # All attempts failed
-        print(f"💥 All {self.max_attempts} attempts failed for {service_name}")
+        print(f"[RETRY] All {self.max_attempts} attempts failed for {service_name}")
         raise last_exception
     
     def should_retry(self, exception: Exception) -> bool:
