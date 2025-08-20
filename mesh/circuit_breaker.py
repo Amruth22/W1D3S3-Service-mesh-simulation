@@ -32,7 +32,7 @@ class CircuitBreakerManager:
         if breaker.state == CircuitState.OPEN:
             if self._should_attempt_reset(breaker):
                 breaker.state = CircuitState.HALF_OPEN
-                print(f"🔄 Circuit breaker for {service_name} is HALF-OPEN (testing)")
+                print(f"[CIRCUIT] Circuit breaker for {service_name} is HALF-OPEN (testing)")
             else:
                 raise Exception(f"Circuit breaker OPEN for {service_name} - service unavailable")
         
@@ -44,7 +44,7 @@ class CircuitBreakerManager:
             if breaker.state == CircuitState.HALF_OPEN:
                 breaker.state = CircuitState.CLOSED
                 breaker.failure_count = 0
-                print(f"✅ Circuit breaker for {service_name} is CLOSED (recovered)")
+                print(f"[CIRCUIT] Circuit breaker for {service_name} is CLOSED (recovered)")
             elif breaker.state == CircuitState.CLOSED:
                 breaker.failure_count = 0
             
@@ -55,12 +55,12 @@ class CircuitBreakerManager:
             breaker.failure_count += 1
             breaker.last_failure_time = datetime.now()
             
-            print(f"❌ Service {service_name} failed ({breaker.failure_count}/{breaker.failure_threshold}): {str(e)}")
+            print(f"[CIRCUIT] Service {service_name} failed ({breaker.failure_count}/{breaker.failure_threshold}): {str(e)}")
             
             # Open circuit if threshold reached
             if breaker.failure_count >= breaker.failure_threshold:
                 breaker.state = CircuitState.OPEN
-                print(f"🚨 Circuit breaker OPENED for {service_name} - too many failures!")
+                print(f"[CIRCUIT] Circuit breaker OPENED for {service_name} - too many failures!")
             
             raise e
     
@@ -90,6 +90,6 @@ class CircuitBreakerManager:
             breaker.state = CircuitState.CLOSED
             breaker.failure_count = 0
             breaker.last_failure_time = None
-            print(f"🔧 Circuit breaker for {service_name} manually reset")
+            print(f"[CIRCUIT] Circuit breaker for {service_name} manually reset")
             return True
         return False
