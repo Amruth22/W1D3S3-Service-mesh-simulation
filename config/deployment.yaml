@@ -1,0 +1,37 @@
+# Simple K8s-style deployment configuration
+# This simulates how services would be configured in real K8s
+
+services:
+  catalog:
+    name: "catalog-service"
+    path: "/catalog"
+    replicas: 2
+    health_check: "/catalog/health"
+    description: "Product catalog service"
+    
+  cart:
+    name: "cart-service" 
+    path: "/cart"
+    replicas: 1
+    health_check: "/cart/health"
+    description: "Shopping cart service"
+    
+  order:
+    name: "order-service"
+    path: "/order"
+    replicas: 3
+    health_check: "/order/health"
+    description: "Order processing service"
+
+# Service mesh configuration
+mesh:
+  circuit_breaker:
+    failure_threshold: 3
+    timeout_seconds: 30
+  
+  retry:
+    max_attempts: 3
+    backoff_seconds: 1
+  
+  load_balancer:
+    strategy: "round_robin"
