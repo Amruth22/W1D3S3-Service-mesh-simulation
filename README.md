@@ -44,7 +44,7 @@ pip install -r requirements.txt
 
 ### 2. **Start Services**
 ```bash
-python start_services.py
+python main.py
 ```
 
 This starts:
@@ -66,7 +66,7 @@ python unit_test.py
 ```
 ├── gateway.py              # Main gateway (port 8080)
 ├── registry.py            # Service registry (port 8081)
-├── start_services.py      # Start both services
+├── main.py      # Start both services
 ├── unit_test.py          # Core 5 unit tests
 ├── config/
 │   └── deployment.yaml    # Service configuration
@@ -168,7 +168,7 @@ The `unit_test.py` includes focused tests for:
 ### **Run Tests**
 ```bash
 # Start services first
-python start_services.py
+python main.py
 
 # Run unit tests (in another terminal)
 python unit_test.py
