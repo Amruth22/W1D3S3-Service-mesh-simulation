@@ -404,18 +404,19 @@ class CoreServiceMeshTests(unittest.TestCase):
             async def failing_service():
                 raise Exception("Service unavailable")
             
-            # Trigger failures to open circuit
+            # Trigger failures to open circuit - use SAME service name for all failures
+            failing_service_name = "failing_service"
             failure_count = 0
-            for i in range(4):  # More than threshold
+            for i in range(4):  # More than threshold (3)
                 try:
-                    await circuit_breaker.call_service(f"failing_service_{i}", failing_service)
+                    await circuit_breaker.call_service(failing_service_name, failing_service)
                 except Exception:
                     failure_count += 1
             
             self.assertGreaterEqual(failure_count, 3)
             
-            # Check that circuit breaker opened
-            failing_breaker = circuit_breaker.get_breaker("failing_service_3")
+            # Check that circuit breaker opened for the failing service
+            failing_breaker = circuit_breaker.get_breaker(failing_service_name)
             self.assertEqual(failing_breaker.state, CircuitState.OPEN)
             self.assertGreaterEqual(failing_breaker.failure_count, 3)
             
