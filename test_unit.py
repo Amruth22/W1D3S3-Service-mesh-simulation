@@ -386,7 +386,9 @@ class CoreServiceMeshTests(unittest.TestCase):
         breaker = circuit_breaker.get_breaker(test_service)
         self.assertIsNotNone(breaker)
         self.assertEqual(breaker.service_name, test_service)
-        self.assertEqual(breaker.state, "closed")
+        # Import CircuitState for proper comparison
+        from models import CircuitState
+        self.assertEqual(breaker.state, CircuitState.CLOSED)
         self.assertEqual(breaker.failure_count, 0)
         
         # Test circuit breaker operations
@@ -414,7 +416,7 @@ class CoreServiceMeshTests(unittest.TestCase):
             
             # Check that circuit breaker opened
             failing_breaker = circuit_breaker.get_breaker("failing_service_3")
-            self.assertEqual(failing_breaker.state, "open")
+            self.assertEqual(failing_breaker.state, CircuitState.OPEN)
             self.assertGreaterEqual(failing_breaker.failure_count, 3)
             
             return True
